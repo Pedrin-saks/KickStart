@@ -47,11 +47,12 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
-        //TO DO: Retirar essa lógica podre feita só pra testar o jogo pelo pc
+        //TO DO: Retirar essa lÃ³gica podre feita sÃ³ pra testar o jogo pelo pc
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
         {
             movement = Input.GetAxis("Horizontal");
             rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
+            Flip();
 
         }
 
@@ -59,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movement = moveJoystic.Horizontal;
             rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
+            Flip();
 
         }
     }
