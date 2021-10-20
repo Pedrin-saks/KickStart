@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public float movement;
  
     private Rigidbody2D rig;
     public FixedJoystick moveJoystic;
@@ -13,8 +14,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float jumpForce;
     private bool isJump;
-    private bool isKeyboardButton;
-    private bool isMobileButton;
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -22,7 +21,11 @@ public class PlayerMovement : MonoBehaviour
 
      void Update()
     {
-        Jump();
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Jump();
+        }
+        
     }
 
 
@@ -31,13 +34,8 @@ public class PlayerMovement : MonoBehaviour
         Move();
     }
 
-    
-    void Move()
+    void Flip()
     {
-        //TO DO: Retirar o suporte de teclado ao fim do projeto 
-        float movement = Input.GetAxis("Horizontal");
-        rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
-
         if (movement > 0)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
@@ -47,10 +45,28 @@ public class PlayerMovement : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
+    void Move()
+    {
+        //TO DO: Retirar essa lógica podre feita só pra testar o jogo pelo pc
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        {
+            movement = Input.GetAxis("Horizontal");
+            rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
+
+        }
+
+        else
+        {
+            movement = moveJoystic.Horizontal;
+            rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
+
+        }
+    }
 
     public void Jump()
     {
-        if(Input.GetButtonDown("Jump") && !isJump)
+       
+        if(!isJump)
         {
             rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isJump = true;
