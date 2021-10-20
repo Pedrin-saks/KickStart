@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Jump();
         }
-        
     }
 
 
@@ -34,13 +33,13 @@ public class PlayerMovement : MonoBehaviour
         Move();
     }
 
-    void Flip()
+    void FlipPlayer()
     {
         if (movement > 0)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
-        else
+        else if (movement < 0)
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
@@ -52,17 +51,14 @@ public class PlayerMovement : MonoBehaviour
         {
             movement = Input.GetAxis("Horizontal");
             rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
-            Flip();
-
         }
 
         else
         {
             movement = moveJoystic.Horizontal;
             rig.velocity = new Vector2(movement * speed * Time.deltaTime, rig.velocity.y);
-            Flip();
-
         }
+        FlipPlayer();
     }
 
     public void Jump()
